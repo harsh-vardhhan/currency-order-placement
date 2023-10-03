@@ -1,7 +1,7 @@
 import tkinter as tk
 
 window = tk.Tk()
-window.title("Hello world")
+window.title("CDS")
 window.geometry("300x300")
 
 hello = tk.Label(text="Hello world!")
