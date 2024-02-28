@@ -1,7 +1,7 @@
 import tkinter as tk
 import requests
 import os
-import json
+import csv
 
 url = 'https://api.upstox.com/v2/login/authorization/token'
 headers = {
@@ -45,7 +45,14 @@ def call_credit_spread():
   }
   response = requests.get(url, headers=headers)
   reponse_data = response.json()
-  print(reponse_data.get('data'))
+  ncd = reponse_data.get('data').get('NCD_FO:USDINR24MARFUT').get('last_price')
+  print(ncd)
+
+  # with open('NSE.csv', newline='') as csvfile:
+  #   reader = csv.DictReader(csvfile)
+  #   for row in reader:
+  #     if row['strike'] == "83.0":
+  #       print(row['tradingsymbol'])
 
 
 def put_credit_spread():
