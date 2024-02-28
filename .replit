@@ -106,3 +106,7 @@ pattern = "**/*.py"
 
 [languages.python3.languageServer]
 start = "pylsp"
+
+[[ports]]
+localPort = 5900
+externalPort = 80

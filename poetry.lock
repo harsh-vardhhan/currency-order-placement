@@ -40,7 +40,7 @@ msgpack = ["msgpack-python (>=0.5,<0.6)"]
 name = "certifi"
 version = "2023.7.22"
 description = "Python package for providing Mozilla's CA Bundle."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -59,7 +59,7 @@ pycparser = "*"
 name = "charset-normalizer"
 version = "3.2.0"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7.0"
 
@@ -213,7 +213,7 @@ lxml = ["lxml"]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -504,11 +504,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pyflakes"
-version = "2.5.0"
+version = "3.2.0"
 description = "passive checker of Python programs"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 
 [[package]]
 name = "pylev"
@@ -520,54 +520,55 @@ python-versions = "*"
 
 [[package]]
 name = "python-lsp-jsonrpc"
-version = "1.0.0"
+version = "1.1.2"
 description = "JSON RPC 2.0 server library"
 category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 
 [package.dependencies]
 ujson = ">=3.0.0"
 
 [package.extras]
-test = ["coverage", "pytest-cov", "pytest", "pyflakes", "pycodestyle", "pylint"]
+test = ["pylint", "pycodestyle", "pyflakes", "pytest", "pytest-cov", "coverage"]
 
 [[package]]
 name = "python-lsp-server"
-version = "1.7.4"
+version = "1.10.0"
 description = "Python Language Server for the Language Server Protocol"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 docstring-to-markdown = "*"
-jedi = ">=0.17.2,<0.19.0"
+importlib-metadata = {version = ">=4.8.3", markers = "python_version < \"3.10\""}
+jedi = ">=0.17.2,<0.20.0"
 pluggy = ">=1.0.0"
-pyflakes = {version = ">=2.5.0,<3.1.0", optional = true, markers = "extra == \"pyflakes\""}
-python-lsp-jsonrpc = ">=1.0.0"
-rope = {version = ">1.2.0", optional = true, markers = "extra == \"rope\""}
+pyflakes = {version = ">=3.2.0,<3.3.0", optional = true, markers = "extra == \"pyflakes\""}
+python-lsp-jsonrpc = ">=1.1.0,<2.0.0"
+rope = {version = ">=1.11.0", optional = true, markers = "extra == \"rope\""}
 ujson = ">=3.0.0"
 whatthepatch = {version = ">=1.0.2,<2.0.0", optional = true, markers = "extra == \"yapf\""}
 yapf = {version = ">=0.33.0", optional = true, markers = "extra == \"yapf\""}
 
 [package.extras]
-all = ["autopep8 (>=1.6.0,<2.1.0)", "flake8 (>=5.0.0,<7)", "mccabe (>=0.7.0,<0.8.0)", "pycodestyle (>=2.9.0,<2.11.0)", "pydocstyle (>=6.3.0,<6.4.0)", "pyflakes (>=2.5.0,<3.1.0)", "pylint (>=2.5.0,<3)", "rope (>1.2.0)", "yapf (>=0.33.0)", "whatthepatch (>=1.0.2,<2.0.0)"]
-autopep8 = ["autopep8 (>=1.6.0,<2.1.0)"]
-flake8 = ["flake8 (>=5.0.0,<7)"]
+all = ["autopep8 (>=2.0.4,<2.1.0)", "flake8 (>=7,<8)", "mccabe (>=0.7.0,<0.8.0)", "pycodestyle (>=2.11.0,<2.12.0)", "pydocstyle (>=6.3.0,<6.4.0)", "pyflakes (>=3.2.0,<3.3.0)", "pylint (>=2.5.0,<3.1)", "rope (>=1.11.0)", "yapf (>=0.33.0)", "whatthepatch (>=1.0.2,<2.0.0)"]
+autopep8 = ["autopep8 (>=2.0.4,<2.1.0)"]
+flake8 = ["flake8 (>=7,<8)"]
 mccabe = ["mccabe (>=0.7.0,<0.8.0)"]
-pycodestyle = ["pycodestyle (>=2.9.0,<2.11.0)"]
+pycodestyle = ["pycodestyle (>=2.11.0,<2.12.0)"]
 pydocstyle = ["pydocstyle (>=6.3.0,<6.4.0)"]
-pyflakes = ["pyflakes (>=2.5.0,<3.1.0)"]
-pylint = ["pylint (>=2.5.0,<3)"]
-rope = ["rope (>1.2.0)"]
-test = ["pylint (>=2.5.0,<3)", "pytest", "pytest-cov", "coverage", "numpy", "pandas", "matplotlib", "pyqt5", "flaky"]
+pyflakes = ["pyflakes (>=3.2.0,<3.3.0)"]
+pylint = ["pylint (>=2.5.0,<3.1)"]
+rope = ["rope (>=1.11.0)"]
+test = ["pylint (>=2.5.0,<3.1)", "pytest", "pytest-cov", "coverage", "numpy", "pandas", "matplotlib", "pyqt5", "flaky"]
 websockets = ["websockets (>=10.3)"]
 yapf = ["yapf (>=0.33.0)", "whatthepatch (>=1.0.2,<2.0.0)"]
 
 [[package]]
 name = "pytoolconfig"
-version = "1.2.5"
+version = "1.3.0"
 description = "Python tool configuration"
 category = "dev"
 optional = false
@@ -579,10 +580,10 @@ platformdirs = {version = ">=1.4.4", optional = true, markers = "extra == \"glob
 tomli = {version = ">=2.0.1", markers = "python_version < \"3.11\""}
 
 [package.extras]
+validation = ["pydantic (>=1.7.4)"]
+global = ["platformdirs (>=1.4.4)"]
 doc = ["tabulate (>=0.8.9)", "sphinx (>=4.5.0)"]
 gendocs = ["sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)", "pytoolconfig"]
-global = ["platformdirs (>=1.4.4)"]
-validation = ["pydantic (>=1.7.4)"]
 
 [[package]]
 name = "pywin32-ctypes"
@@ -596,7 +597,7 @@ python-versions = ">=3.6"
 name = "requests"
 version = "2.31.0"
 description = "Python HTTP for Humans."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -623,11 +624,11 @@ requests = ">=2.0.1,<3.0.0"
 
 [[package]]
 name = "rope"
-version = "1.9.0"
+version = "1.12.0"
 description = "a python refactoring library..."
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 pytoolconfig = {version = ">=1.2.2", extras = ["global"]}
@@ -701,7 +702,7 @@ python-versions = ">=3.8"
 name = "urllib3"
 version = "1.26.15"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
@@ -785,7 +786,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-ena
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<3.9"
-content-hash = "b32dd48bb3735a465ba86f7b1603206438361f29b7e54109424489caf75386af"
+content-hash = "44ed70f66b1965a84fc0dfafa42bd38bc4be2d02560cf846a1ba6339ba820269"
 
 [metadata.files]
 blinker = []
