@@ -37,6 +37,13 @@ def login():
 
 def call_credit_spread():
   print('call_credit_spread')
+  url = 'https://api.upstox.com/v2/market-quote/ltp?instrument_key=NCD_FO|1060'
+  headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN']
+  }
+  response = requests.get(url, headers=headers)
+  print(response.text)
 
 
 def put_credit_spread():
