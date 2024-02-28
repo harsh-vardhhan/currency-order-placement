@@ -1,6 +1,7 @@
 import tkinter as tk
 import requests
 import os
+import json
 
 url = 'https://api.upstox.com/v2/login/authorization/token'
 headers = {
@@ -43,7 +44,8 @@ def call_credit_spread():
     'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN']
   }
   response = requests.get(url, headers=headers)
-  print(response.text)
+  reponse_data = response.json()
+  print(reponse_data.get('data'))
 
 
 def put_credit_spread():
