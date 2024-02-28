@@ -9,7 +9,7 @@ headers = {
 }
 
 data = {
-  'code': os.environ['API_KEY'],
+  'code': os.environ['CODE'],
   'client_id': os.environ['CLIENT_ID'],
   'client_secret': os.environ['API_SECRET'],
   'redirect_uri': os.environ['REDIRECT_URL'],
