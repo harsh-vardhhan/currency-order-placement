@@ -30,14 +30,14 @@ def authorize():
   url = authorizeUrl + '?client_id=' + os.environ[
     'CLIENT_ID'] + '&redirect_uri=' + os.environ['REDIRECT_URL']
   webbrowser.open(url, new=0, autoraise=True)
-
+bugfix
 
 def login():
   response = requests.post(url, headers=headers, data=data)
-  reponse_data = response.json()
+  response_data = response.json()
   access_token = 'access_token'
-  if access_token in reponse_data:
-    os.environ["ACCESS_TOKEN"] = str(reponse_data[access_token])
+  if access_token in response_data:
+    os.environ["ACCESS_TOKEN"] = str(response_data[access_token])
   else:
     print('reauthorize')
 
