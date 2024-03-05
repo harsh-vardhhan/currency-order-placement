@@ -1,7 +1,8 @@
 import tkinter as tk
 import requests
 import os
-import csv
+import math
+import webbrowser
 
 url = 'https://api.upstox.com/v2/login/authorization/token'
 headers = {
@@ -17,7 +18,7 @@ data = {
   'grant_type': 'authorization_code',
 }
 
-authorizeUrl = "https://api.upstox.com/v2/login/authorization/dialog"
+authorizeUrl = "https://api.upstox.com/v2/login/authorization/dialog/"
 
 params = {
   'client_id': os.environ['CLIENT_ID'],
@@ -26,14 +27,19 @@ params = {
 
 
 def authorize():
-  response = requests.request("GET", authorizeUrl, params=params, data={})
-  print(response.text)
+  url = authorizeUrl + '?client_id=' + os.environ[
+    'CLIENT_ID'] + '&redirect_uri=' + os.environ['REDIRECT_URL']
+  webbrowser.open(url, new=0, autoraise=True)
 
 
 def login():
   response = requests.post(url, headers=headers, data=data)
-  print(response.status_code)
-  print(response.json())
+  reponse_data = response.json()
+  access_token = 'access_token'
+  if access_token in reponse_data:
+    os.environ["ACCESS_TOKEN"] = str(reponse_data[access_token])
+  else:
+    print('reauthorize')
 
 
 def call_credit_spread():
@@ -45,14 +51,9 @@ def call_credit_spread():
   }
   response = requests.get(url, headers=headers)
   reponse_data = response.json()
-  ncd = reponse_data.get('data').get('NCD_FO:USDINR24MARFUT').get('last_price')
-  print(ncd)
-
-  # with open('NSE.csv', newline='') as csvfile:
-  #   reader = csv.DictReader(csvfile)
-  #   for row in reader:
-  #     if row['strike'] == "83.0":
-  #       print(row['tradingsymbol'])
+  ncd_fut_price = reponse_data.get('data').get('NCD_FO:USDINR24MARFUT').get(
+    'last_price')
+  print(math.ceil(ncd_fut_price))
 
 
 def put_credit_spread():
