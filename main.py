@@ -30,14 +30,14 @@ def authorize():
   url = authorizeUrl + '?client_id=' + os.environ[
     'CLIENT_ID'] + '&redirect_uri=' + os.environ['REDIRECT_URL']
   webbrowser.open(url, new=0, autoraise=True)
-bugfix
+
 
 def login():
   response = requests.post(url, headers=headers, data=data)
   response_data = response.json()
   access_token = 'access_token'
   if access_token in response_data:
-    os.environ["ACCESS_TOKEN"] = str(response_data[access_token])
+    print(response_data[access_token])
   else:
     print('reauthorize')
 
@@ -50,10 +50,20 @@ def call_credit_spread():
     'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN']
   }
   response = requests.get(url, headers=headers)
-  reponse_data = response.json()
-  ncd_fut_price = reponse_data.get('data').get('NCD_FO:USDINR24MARFUT').get(
+  response_data = response.json()
+  print(response_data)
+  ncd_fut_price = response_data.get('data').get('NCD_FO:USDINR24MARFUT').get(
     'last_price')
   print(math.ceil(ncd_fut_price))
+  # get option chain
+  url = "https://api.upstox.com/v2/option/chain"
+  payload = {'instrument_key': 'NCD_FO|11037', 'expiry_date': '2024-03-26'}
+  headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN']
+  }
+  response = requests.request("GET", url, params=payload, headers=headers)
+  print(response.text)
 
 
 def put_credit_spread():
