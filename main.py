@@ -3,6 +3,7 @@ import requests
 import os
 import math
 import webbrowser
+import json
 
 url = 'https://api.upstox.com/v2/login/authorization/token'
 headers = {
@@ -55,15 +56,13 @@ def call_credit_spread():
   ncd_fut_price = response_data.get('data').get('NCD_FO:USDINR24MARFUT').get(
     'last_price')
   print(math.ceil(ncd_fut_price))
-  # get option chain
-  url = "https://api.upstox.com/v2/option/chain"
-  payload = {'instrument_key': 'NCD_FO|11037', 'expiry_date': '2024-03-26'}
-  headers = {
-    'Accept': 'application/json',
-    'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN']
-  }
-  response = requests.request("GET", url, params=payload, headers=headers)
-  print(response.text)
+  # get options data by strike
+  NSE = open('NSE.json')
+  data = json.load(NSE)
+  for i in data:
+    if i['instrument_key'] == 'NCD_FO|11037':
+      print(i)
+  NSE.close()
 
 
 def put_credit_spread():
