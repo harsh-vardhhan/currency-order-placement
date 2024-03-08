@@ -81,14 +81,62 @@ def call_credit_spread():
     if difference < smallest_difference:
       smallest_difference = difference
       sell_strike = i
-  print(sell_strike)
   # buy strike
   buy_strike = None
   buy_strike_price = sell_strike['strike_price'] + 0.25
   for i in OTM_call_options:
     if i['strike_price'] == buy_strike_price:
       buy_strike = i
-  print(buy_strike)
+  # get call price
+  quotes_price_url = "https://api.upstox.com/v2/market-quote/quotes?instrument_key=" + sell_strike[
+    'instrument_key']
+  payload = {}
+  headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN']
+  }
+  response = requests.request("GET",
+                              quotes_price_url,
+                              headers=headers,
+                              data=payload)
+  response_data = response.json()
+  instrument_name = sell_strike['segment'] \
+  + ':' + sell_strike['underlying_symbol'] \
+  + '24MAR' + str(sell_strike['strike_price']) \
+  +sell_strike['instrument_type']
+
+  sell_prices=response_data\
+  .get('data')\
+  .get(instrument_name)\
+  .get('depth')\
+  .get('buy')
+  sell_price = sell_prices[0]['price']
+
+  # place sell order
+  place_order_url = "https://api.upstox.com/v2/order/place"
+  order_payload = {
+    "quantity": 1,
+    "product": "D",
+    "validity": "DAY",
+    "price": sell_price,
+    "instrument_token": sell_strike['instrument_key'],
+    "order_type": "LIMIT",
+    "transaction_type": "SELL",
+    "disclosed_quantity": 0,
+    "trigger_price": 0,
+    "is_amo": False
+  }
+  print(order_payload)
+  order_headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN'],
+    'Content-Type': 'application/x-www-form-urlencoded',
+  }
+  response = requests.request("POST",
+                              place_order_url,
+                              headers=order_headers,
+                              data=order_payload)
+  print(response.text)
 
 
 def put_credit_spread():
