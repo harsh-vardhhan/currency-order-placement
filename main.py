@@ -46,7 +46,6 @@ def login():
 
 
 def call_credit_spread():
-  print('call_credit_spread')
   url = 'https://api.upstox.com/v2/market-quote/ltp?instrument_key=NCD_FO|1060'
   headers = {
     'Accept': 'application/json',
@@ -54,7 +53,7 @@ def call_credit_spread():
   }
   response = requests.get(url, headers=headers)
   response_data = response.json()
-  ncd_fut_price = response_data.get('data').get('NCD_FO:USDINR24MARFUT').get(
+  future_price = response_data.get('data').get('NCD_FO:USDINR24MARFUT').get(
     'last_price')
   # get options data by strike
   NSE = open('NSE.json')
@@ -63,7 +62,7 @@ def call_credit_spread():
   date_time = datetime(2024, 3, 26, 23, 59, 59) - timedelta(hours=5,
                                                             minutes=30)
   unix_time = math.trunc(time.mktime(date_time.timetuple()) * 1000)
-
+  # filter OTM call options
   OTM_call_options = []
   for i in data:
     if i['instrument_type'] == 'CE'\
@@ -71,12 +70,25 @@ def call_credit_spread():
     and i['name'] == 'USDINR'\
     and i['expiry'] == unix_time\
     and i['weekly'] == False\
-    and i['strike_price'] > ncd_fut_price:
+    and i['strike_price'] > future_price:
       OTM_call_options.append(i)
   NSE.close()
-
+  # sell strike
+  smallest_difference = 100
+  sell_strike = None
   for i in OTM_call_options:
-    print(i)
+    difference = i['strike_price'] - future_price
+    if difference < smallest_difference:
+      smallest_difference = difference
+      sell_strike = i
+  print(sell_strike)
+  # buy strike
+  buy_strike = None
+  buy_strike_price = sell_strike['strike_price'] + 0.25
+  for i in OTM_call_options:
+    if i['strike_price'] == buy_strike_price:
+      buy_strike = i
+  print(buy_strike)
 
 
 def put_credit_spread():
