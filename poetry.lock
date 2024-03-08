@@ -519,6 +519,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "python-dateutil"
+version = "2.9.0.post0"
+description = "Extensions to the standard Python datetime module"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+
+[package.dependencies]
+six = ">=1.5"
+
+[[package]]
 name = "python-lsp-jsonrpc"
 version = "1.1.2"
 description = "JSON RPC 2.0 server library"
@@ -584,6 +595,14 @@ validation = ["pydantic (>=1.7.4)"]
 global = ["platformdirs (>=1.4.4)"]
 doc = ["tabulate (>=0.8.9)", "sphinx (>=4.5.0)"]
 gendocs = ["sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)", "pytoolconfig"]
+
+[[package]]
+name = "pytz"
+version = "2024.1"
+description = "World timezone definitions, modern and historical"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "pywin32-ctypes"
@@ -662,9 +681,17 @@ python-versions = ">=3.7"
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "timedelta"
+version = "2020.12.3"
+description = "datetime.timedelta replacement"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "toml"
@@ -786,7 +813,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-ena
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<3.9"
-content-hash = "44ed70f66b1965a84fc0dfafa42bd38bc4be2d02560cf846a1ba6339ba820269"
+content-hash = "9051076f03d449f98a575f297e4128f480194a1051728dd2a23a217ddf493437"
 
 [metadata.files]
 blinker = []
@@ -834,9 +861,11 @@ ptyprocess = []
 pycparser = []
 pyflakes = []
 pylev = []
+python-dateutil = []
 python-lsp-jsonrpc = []
 python-lsp-server = []
 pytoolconfig = []
+pytz = []
 pywin32-ctypes = []
 requests = []
 requests-toolbelt = []
@@ -844,6 +873,7 @@ rope = []
 secretstorage = []
 shellingham = []
 six = []
+timedelta = []
 toml = []
 tomli = []
 tomlkit = []

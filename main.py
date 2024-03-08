@@ -1,9 +1,11 @@
 import tkinter as tk
 import requests
 import os
-import math
+import time
+from datetime import datetime, timedelta
 import webbrowser
 import json
+import math
 
 url = 'https://api.upstox.com/v2/login/authorization/token'
 headers = {
@@ -52,17 +54,29 @@ def call_credit_spread():
   }
   response = requests.get(url, headers=headers)
   response_data = response.json()
-  print(response_data)
   ncd_fut_price = response_data.get('data').get('NCD_FO:USDINR24MARFUT').get(
     'last_price')
-  print(math.ceil(ncd_fut_price))
   # get options data by strike
   NSE = open('NSE.json')
   data = json.load(NSE)
+
+  date_time = datetime(2024, 3, 26, 23, 59, 59) - timedelta(hours=5,
+                                                            minutes=30)
+  unix_time = math.trunc(time.mktime(date_time.timetuple()) * 1000)
+
+  OTM_call_options = []
   for i in data:
-    if i['instrument_key'] == 'NCD_FO|11037':
-      print(i)
+    if i['instrument_type'] == 'CE'\
+    and i['segment'] == 'NCD_FO'\
+    and i['name'] == 'USDINR'\
+    and i['expiry'] == unix_time\
+    and i['weekly'] == False\
+    and i['strike_price'] > ncd_fut_price:
+      OTM_call_options.append(i)
   NSE.close()
+
+  for i in OTM_call_options:
+    print(i)
 
 
 def put_credit_spread():
