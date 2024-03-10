@@ -28,6 +28,8 @@ params = {
   'redirect_uri': os.environ['REDIRECT_URL'],
 }
 
+usdinr_ticksize = 1000
+
 
 def authorize():
   url = authorizeUrl + '?client_id=' + os.environ[
@@ -116,7 +118,7 @@ def call_credit_spread():
   .get(instrument_name)\
   .get('depth')\
   .get('buy')
-  sell_price = sell_prices[0]['price']
+  sell_price = sell_prices[0]['price'] * usdinr_ticksize
   print(sell_price)
   # get buy call price
   quotes_price_url = "https://api.upstox.com/v2/market-quote/quotes?instrument_key=" + buy_strike[
@@ -147,7 +149,7 @@ def call_credit_spread():
   .get(instrument_name)\
   .get('depth')\
   .get('sell')
-  buy_price = buy_prices[0]['price']
+  buy_price = buy_prices[0]['price'] * usdinr_ticksize
   print(buy_price)
 
   # place sell order
