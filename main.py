@@ -30,6 +30,9 @@ params = {
 
 usdinr_ticksize = 1000
 
+max_profit = 0
+max_loss = 0
+
 
 def authorize():
   url = authorizeUrl + '?client_id=' + os.environ[
@@ -157,20 +160,12 @@ def call_credit_spread():
   max_profit = net_credit
   max_loss = spread - net_credit
 
-  print(max_profit)
-  print(max_loss)
+  max_profit_label['text'] = max_profit
+  max_loss_label['text'] = max_loss
 
 
 def put_credit_spread():
-  print('call_credit_spread')
-
-
-def iron_condor():
-  print('iron_condor')
-
-
-def short_strangle():
-  print('short_strangle')
+  print('put_credit_spread')
 
 
 window = tk.Tk()
@@ -189,6 +184,14 @@ bearish_strategy.pack()
 
 CallCreditSpread = tk.Button(text="Call Credit Spread",
                              command=call_credit_spread)
+max_profit_label = tk.Label()
+max_profit_label.config(text=max_profit)
+max_profit_label.pack()
+
+max_loss_label = tk.Label()
+max_loss_label.config(text=max_loss)
+max_loss_label.pack()
+
 CallCreditSpread.pack()
 
 bullish_strategy = tk.Label(text="Bullish")
@@ -198,15 +201,5 @@ bullish_strategy.pack()
 PutCreditSpread = tk.Button(text="Put Credit Spread",
                             command=put_credit_spread)
 PutCreditSpread.pack()
-
-neutral_strategy = tk.Label(text="Neutral")
-neutral_strategy.config(font=("Courier", 14))
-neutral_strategy.pack()
-
-ShortStrangle = tk.Button(text="Short Strangle", command=short_strangle)
-ShortStrangle.pack()
-
-IronCondor = tk.Button(text="Iron Condor", command=iron_condor)
-IronCondor.pack()
 
 tk.mainloop()
