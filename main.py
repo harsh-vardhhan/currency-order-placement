@@ -169,6 +169,11 @@ def call_credit_spread():
                            fg='white',
                            font='-weight bold')
 
+  buy_strike_label.config(text=buy_strike['strike_price'],
+                          bg="green",
+                          fg='white',
+                          font='-weight bold')
+
   # place buy order
   place_order_url = "https://api.upstox.com/v2/order/place"
   order_payload = {
@@ -245,6 +250,9 @@ CallCreditSpread = tk.Button(text="Call Credit Spread",
                              command=call_credit_spread)
 
 CallCreditSpread.pack()
+
+buy_strike_label = tk.Label()
+buy_strike_label.pack()
 
 sell_strike_label = tk.Label()
 sell_strike_label.pack()
