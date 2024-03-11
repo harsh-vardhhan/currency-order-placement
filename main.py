@@ -169,7 +169,7 @@ def call_credit_spread():
     "quantity": 1,
     "product": "D",
     "validity": "DAY",
-    "price": sell_price,
+    "price": (sell_price / 1000),
     "instrument_token": sell_strike['instrument_key'],
     "order_type": "LIMIT",
     "transaction_type": "SELL",
@@ -178,15 +178,18 @@ def call_credit_spread():
     "is_amo": False
   }
 
+  print(order_payload)
+
   order_headers = {
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN'],
     'Content-Type': 'application/x-www-form-urlencoded',
   }
   response = requests.request("POST",
-                              place_order_url,
+                              url=place_order_url,
+                              data=order_payload,
                               headers=order_headers,
-                              data=order_payload)
+                              )
   print(response.text)
 
 
