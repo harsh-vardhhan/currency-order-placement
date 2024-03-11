@@ -7,6 +7,8 @@ import webbrowser
 import json
 import math
 
+expiry = '24APR'
+
 url = 'https://api.upstox.com/v2/login/authorization/token'
 headers = {
   'accept': 'application/json',
@@ -52,20 +54,23 @@ def login():
 
 
 def call_credit_spread():
-  url = 'https://api.upstox.com/v2/market-quote/ltp?instrument_key=NCD_FO|1060'
+  url = 'https://api.upstox.com/v2/market-quote/ltp?instrument_key=NCD_FO|9063'
   headers = {
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN']
   }
   response = requests.get(url, headers=headers)
   response_data = response.json()
-  future_price = response_data.get('data').get('NCD_FO:USDINR24MARFUT').get(
-    'last_price')
+  print(response_data)
+  future_price = response_data\
+  .get('data')\
+  .get('NCD_FO:USDINR' + expiry +'FUT')\
+  .get('last_price')
   # get options data by strike
   NSE = open('NSE.json')
   data = json.load(NSE)
 
-  date_time = datetime(2024, 3, 26, 23, 59, 59) - timedelta(hours=5,
+  date_time = datetime(2024, 4, 26, 23, 59, 59) - timedelta(hours=5,
                                                             minutes=30)
   unix_time = math.trunc(time.mktime(date_time.timetuple()) * 1000)
   # filter OTM call options
@@ -89,7 +94,7 @@ def call_credit_spread():
       sell_strike = i
   # buy strike
   buy_strike = None
-  buy_strike_price = sell_strike['strike_price'] + 0.125
+  buy_strike_price = sell_strike['strike_price'] + 0.25
   for i in OTM_call_options:
     if i['strike_price'] == buy_strike_price:
       buy_strike = i
@@ -114,7 +119,7 @@ def call_credit_spread():
 
   instrument_name = sell_strike['segment'] \
   + ':' + sell_strike['underlying_symbol'] \
-  + '24MAR' + str(sell_strike_price) \
+  + expiry + str(sell_strike_price) \
   +sell_strike['instrument_type']
 
   sell_prices=response_data\
@@ -144,7 +149,7 @@ def call_credit_spread():
 
   instrument_name = buy_strike['segment'] \
   + ':' + buy_strike['underlying_symbol'] \
-  + '24MAR' + str(buy_strike_price) \
+  + expiry + str(buy_strike_price) \
   +buy_strike['instrument_type']
 
   buy_prices=response_data\
@@ -164,12 +169,14 @@ def call_credit_spread():
   max_profit_label['text'] = 'Max Profit: ₹' + str(max_profit)
   max_loss_label['text'] = 'Max Loss: ₹' + str(max_loss)
 
-  sell_strike_label.config(text=sell_strike['strike_price'],
+  sell_strike_label.config(text=str(sell_strike['strike_price']) +
+                           sell_strike['instrument_type'],
                            bg="red",
                            fg='white',
                            font='-weight bold')
 
-  buy_strike_label.config(text=buy_strike['strike_price'],
+  buy_strike_label.config(text=str(buy_strike['strike_price']) +
+                          buy_strike['instrument_type'],
                           bg="green",
                           fg='white',
                           font='-weight bold')
@@ -228,10 +235,6 @@ def call_credit_spread():
   )
 
 
-def put_credit_spread():
-  print('put_credit_spread')
-
-
 window = tk.Tk()
 window.title("USDINR trading tool")
 window.geometry("300x300")
@@ -264,13 +267,5 @@ max_profit_label.pack()
 max_loss_label = tk.Label()
 max_loss_label.config(text=max_loss)
 max_loss_label.pack()
-
-bullish_strategy = tk.Label(text="Bullish")
-bullish_strategy.config(font=("Courier", 14))
-bullish_strategy.pack()
-
-PutCreditSpread = tk.Button(text="Put Credit Spread",
-                            command=put_credit_spread)
-PutCreditSpread.pack()
 
 tk.mainloop()
