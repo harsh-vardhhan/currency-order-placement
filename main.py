@@ -169,6 +169,32 @@ def call_credit_spread():
                            fg='white',
                            font='-weight bold')
 
+  # place buy order
+  place_order_url = "https://api.upstox.com/v2/order/place"
+  order_payload = {
+    "quantity": 1,
+    "product": "D",
+    "validity": "DAY",
+    "price": (buy_price / 1000),
+    "instrument_token": buy_strike['instrument_key'],
+    "order_type": "LIMIT",
+    "transaction_type": "BUY",
+    "disclosed_quantity": 0,
+    "trigger_price": 0,
+    "is_amo": False
+  }
+
+  order_headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN'],
+    'Content-Type': 'application/json',
+  }
+  response = requests.request(
+    "POST",
+    url=place_order_url,
+    json=order_payload,
+    headers=order_headers,
+  )
   # place sell order
   place_order_url = "https://api.upstox.com/v2/order/place"
   order_payload = {
@@ -184,20 +210,17 @@ def call_credit_spread():
     "is_amo": False
   }
 
-  print(order_payload)
-
   order_headers = {
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN'],
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
   }
   response = requests.request(
     "POST",
     url=place_order_url,
-    data=order_payload,
+    json=order_payload,
     headers=order_headers,
   )
-  print(response.text)
 
 
 def put_credit_spread():
