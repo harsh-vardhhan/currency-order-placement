@@ -126,7 +126,7 @@ def call_credit_spread():
   .get('data')\
   .get(instrument_name)\
   .get('depth')\
-  .get('buy')
+  .get('sell')
   sell_price = sell_prices[0]['price'] * usdinr_ticksize
   # buy call price
   quotes_price_url = "https://api.upstox.com/v2/market-quote/quotes?instrument_key=" + buy_strike[
@@ -156,7 +156,7 @@ def call_credit_spread():
   .get('data')\
   .get(instrument_name)\
   .get('depth')\
-  .get('sell')
+  .get('buy')
   buy_price = buy_prices[0]['price'] * usdinr_ticksize
 
   # call credit spread - max profit & max loss
