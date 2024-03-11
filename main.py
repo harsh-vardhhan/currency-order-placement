@@ -89,7 +89,7 @@ def call_credit_spread():
       sell_strike = i
   # buy strike
   buy_strike = None
-  buy_strike_price = sell_strike['strike_price'] + 0.25
+  buy_strike_price = sell_strike['strike_price'] + 0.125
   for i in OTM_call_options:
     if i['strike_price'] == buy_strike_price:
       buy_strike = i
