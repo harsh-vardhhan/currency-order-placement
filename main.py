@@ -32,6 +32,7 @@ usdinr_ticksize = 1000
 
 max_profit = ''
 max_loss = ''
+sell_strike = ''
 
 
 def authorize():
@@ -163,6 +164,11 @@ def call_credit_spread():
   max_profit_label['text'] = 'Max Profit: ₹' + str(max_profit)
   max_loss_label['text'] = 'Max Loss: ₹' + str(max_loss)
 
+  sell_strike_label.config(text=sell_strike['strike_price'],
+                           bg="red",
+                           fg='white',
+                           font='-weight bold')
+
   # place sell order
   place_order_url = "https://api.upstox.com/v2/order/place"
   order_payload = {
@@ -185,11 +191,12 @@ def call_credit_spread():
     'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN'],
     'Content-Type': 'application/x-www-form-urlencoded',
   }
-  response = requests.request("POST",
-                              url=place_order_url,
-                              data=order_payload,
-                              headers=order_headers,
-                              )
+  response = requests.request(
+    "POST",
+    url=place_order_url,
+    data=order_payload,
+    headers=order_headers,
+  )
   print(response.text)
 
 
@@ -215,6 +222,9 @@ CallCreditSpread = tk.Button(text="Call Credit Spread",
                              command=call_credit_spread)
 
 CallCreditSpread.pack()
+
+sell_strike_label = tk.Label()
+sell_strike_label.pack()
 
 max_profit_label = tk.Label()
 max_profit_label.config(text=max_profit)
