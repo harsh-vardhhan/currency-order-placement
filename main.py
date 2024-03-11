@@ -30,8 +30,8 @@ params = {
 
 usdinr_ticksize = 1000
 
-max_profit = 0
-max_loss = 0
+max_profit = ''
+max_loss = ''
 
 
 def authorize():
@@ -160,8 +160,8 @@ def call_credit_spread():
   max_profit = net_credit
   max_loss = spread - net_credit
 
-  max_profit_label['text'] = max_profit
-  max_loss_label['text'] = max_loss
+  max_profit_label['text'] = 'Max Profit: ₹' + str(max_profit)
+  max_loss_label['text'] = 'Max Loss: ₹' + str(max_loss)
 
   # place sell order
   place_order_url = "https://api.upstox.com/v2/order/place"
@@ -210,6 +210,9 @@ bearish_strategy.pack()
 
 CallCreditSpread = tk.Button(text="Call Credit Spread",
                              command=call_credit_spread)
+
+CallCreditSpread.pack()
+
 max_profit_label = tk.Label()
 max_profit_label.config(text=max_profit)
 max_profit_label.pack()
@@ -217,8 +220,6 @@ max_profit_label.pack()
 max_loss_label = tk.Label()
 max_loss_label.config(text=max_loss)
 max_loss_label.pack()
-
-CallCreditSpread.pack()
 
 bullish_strategy = tk.Label(text="Bullish")
 bullish_strategy.config(font=("Courier", 14))
