@@ -1,3 +1,5 @@
+# NOTE: Not a SEBI research analyst. I am not responsibly for your profit or loss.
+
 import tkinter as tk
 import requests
 import os
