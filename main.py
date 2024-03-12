@@ -68,7 +68,6 @@ def call_credit_spread():
   }
   response = requests.get(url, headers=headers)
   response_data = response.json()
-  print(response_data)
   future_price = response_data\
   .get('data')\
   .get('NCD_FO:USDINR' + expiry +'FUT')\
