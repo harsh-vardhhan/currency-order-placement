@@ -1,4 +1,8 @@
 # NOTE: Not a SEBI research analyst. I am not responsibly for your profit or loss.
+#TODO: dynamically save secret variable of replit
+#TODO: break down actions into functions
+#TODO: save max profit and loss in replit DB
+#TODO: exit position if profit hits max profit
 
 import tkinter as tk
 import requests
@@ -130,6 +134,7 @@ def call_credit_spread():
   .get('depth')\
   .get('sell')
   sell_price = sell_prices[0]['price'] * usdinr_ticksize
+  # TODO: calculate bid ask spread
   # buy call price
   quotes_price_url = "https://api.upstox.com/v2/market-quote/quotes?instrument_key=" + buy_strike[
     'instrument_key']
