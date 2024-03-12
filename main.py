@@ -36,7 +36,7 @@ params = {
   'redirect_uri': os.environ['REDIRECT_URL'],
 }
 
-usdinr_ticksize = 1000
+usdinr_lotsize = 1000
 
 max_profit = ''
 max_loss = ''
@@ -133,7 +133,7 @@ def call_credit_spread():
   .get(instrument_name)\
   .get('depth')\
   .get('sell')
-  sell_price = sell_prices[0]['price'] * usdinr_ticksize
+  sell_price = sell_prices[0]['price'] * usdinr_lotsize
   # TODO: calculate bid ask spread
   # buy call price
   quotes_price_url = "https://api.upstox.com/v2/market-quote/quotes?instrument_key=" + buy_strike[
@@ -164,10 +164,10 @@ def call_credit_spread():
   .get(instrument_name)\
   .get('depth')\
   .get('buy')
-  buy_price = buy_prices[0]['price'] * usdinr_ticksize
+  buy_price = buy_prices[0]['price'] * usdinr_lotsize
 
   # call credit spread - max profit & max loss
-  spread = (buy_strike_price - sell_strike_price) * usdinr_ticksize
+  spread = (buy_strike_price - sell_strike_price) * usdinr_lotsize
   net_credit = sell_price - buy_price
 
   max_profit = net_credit
@@ -194,7 +194,7 @@ def call_credit_spread():
     "quantity": 1,
     "product": "D",
     "validity": "DAY",
-    "price": (buy_price / 1000),
+    "price": (buy_price / usdinr_lotsize),
     "instrument_token": buy_strike['instrument_key'],
     "order_type": "LIMIT",
     "transaction_type": "BUY",
@@ -220,7 +220,7 @@ def call_credit_spread():
     "quantity": 1,
     "product": "D",
     "validity": "DAY",
-    "price": (sell_price / 1000),
+    "price": (sell_price / usdinr_lotsize),
     "instrument_token": sell_strike['instrument_key'],
     "order_type": "LIMIT",
     "transaction_type": "SELL",
