@@ -1,6 +1,5 @@
 # NOTE: Not a SEBI research analyst. I am not responsibly for your profit or loss.
 #TODO: dynamically save secret variable of replit
-#TODO: break down actions into functions
 #TODO: save max profit and loss in replit DB
 #TODO: exit position if profit hits max profit
 
@@ -15,35 +14,14 @@ import math
 from call_price import sell_call_price, buy_call_price
 from place_order import place_buy_order, place_sell_order
 
-url = 'https://api.upstox.com/v2/login/authorization/token'
-headers = {
-  'accept': 'application/json',
-  'Content-Type': 'application/x-www-form-urlencoded',
-}
-
-data = {
-  'code': os.environ['CODE'],
-  'client_id': os.environ['CLIENT_ID'],
-  'client_secret': os.environ['API_SECRET'],
-  'redirect_uri': os.environ['REDIRECT_URL'],
-  'grant_type': 'authorization_code',
-}
-
 authorizeUrl = "https://api.upstox.com/v2/login/authorization/dialog/"
 
-params = {
-  'client_id': os.environ['CLIENT_ID'],
-  'redirect_uri': os.environ['REDIRECT_URL'],
-}
-
 expiry = '24APR'
-
 usdinr_lotsize = 1000
 liquid_spread = 0.25
 
 max_profit = ''
 max_loss = ''
-sell_strike = ''
 
 
 def authorize():
@@ -53,6 +31,19 @@ def authorize():
 
 
 def login():
+  url = 'https://api.upstox.com/v2/login/authorization/token'
+  headers = {
+    'accept': 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+  }
+  data = {
+    'code': os.environ['CODE'],
+    'client_id': os.environ['CLIENT_ID'],
+    'client_secret': os.environ['API_SECRET'],
+    'redirect_uri': os.environ['REDIRECT_URL'],
+    'grant_type': 'authorization_code',
+  }
+  print(os.environ['CODE'])
   response = requests.post(url, headers=headers, data=data)
   response_data = response.json()
   access_token = 'access_token'
