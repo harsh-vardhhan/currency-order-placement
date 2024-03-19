@@ -1,6 +1,8 @@
 import requests
 import os
 import math
+import time
+from place_order import place_sell_order, modify_sell_order
 
 expiry = '24APR'
 usdinr_lotsize = 1000
@@ -36,7 +38,26 @@ def sell_call_price(sell_strike):
   .get('depth')\
   .get('sell')
   sell_price = sell_prices[0]['price'] * usdinr_lotsize
-  # TODO: calculate bid ask spread
+  # TODO: smart pricing
+  order_id = None
+  for i, price in reversed(list(enumerate(sell_prices))):
+    # Place order
+    if i == (len(sell_prices) - 1):
+      order_placed = place_sell_order(price['price'], sell_strike)
+      order_id = order_placed.json().get('data').get('order_id')
+    # Modify order
+    else:
+      order_status_api = "https://api.upstox.com/v2/order/details?order_id=" + str(
+        order_id)
+      response = requests.request("GET", order_status_api, headers=headers)
+      pending_quantity = response.json().get('data').get('pending_quantity')
+      if pending_quantity > 0:
+        order_modified = modify_sell_order(price['price'], order_id)
+        print(order_modified.json())
+        order_id = order_modified.json().get('data').get('order_id')
+    time.sleep(5)
+
+  # check for spread width
   ask = response_data\
   .get('data')\
   .get(instrument_name)\
@@ -48,7 +69,10 @@ def sell_call_price(sell_strike):
   .get('depth')\
   .get('buy')[0]['price']
   spread = ask - bid
-  return sell_price, sell_strike_price
+  illiquid = False
+  if spread > 0.25:
+    illiquid = True
+  return sell_price, sell_strike_price, illiquid
 
 
 def buy_call_price(buy_strike):
@@ -79,7 +103,7 @@ def buy_call_price(buy_strike):
   .get('data')\
   .get(instrument_name)\
   .get('depth')\
-  .get('buy')
+  .get('sell')
   buy_price = buy_prices[0]['price'] * usdinr_lotsize
   # TODO: calculate bid ask spread
   ask = response_data\

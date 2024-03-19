@@ -40,7 +40,7 @@ def place_sell_order(sell_price, sell_strike):
     "quantity": 1,
     "product": "D",
     "validity": "DAY",
-    "price": (sell_price / usdinr_lotsize),
+    "price": sell_price,
     "instrument_token": sell_strike['instrument_key'],
     "order_type": "LIMIT",
     "transaction_type": "SELL",
@@ -60,3 +60,30 @@ def place_sell_order(sell_price, sell_strike):
     json=order_payload,
     headers=order_headers,
   )
+  return response
+
+
+def modify_sell_order(sell_price, order_id):
+  # place sell order
+  modify_order_url = "https://api.upstox.com/v2/order/modify"
+  order_payload = {
+    "validity": "DAY",
+    "price": sell_price,
+    "order_id": order_id,
+    "order_type": "LIMIT",
+    "disclosed_quantity": 0,
+    "trigger_price": 0
+  }
+  print(order_payload)
+  order_headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + os.environ['ACCESS_TOKEN'],
+    'Content-Type': 'application/json',
+  }
+  response = requests.request(
+    "PUT",
+    url=modify_order_url,
+    json=order_payload,
+    headers=order_headers,
+  )
+  return response

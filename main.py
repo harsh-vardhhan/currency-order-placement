@@ -98,7 +98,7 @@ def call_credit_spread():
     if i['strike_price'] == buy_strike_price:
       buy_strike = i
   # sell call price
-  sell_price, sell_strike_price = sell_call_price(sell_strike)
+  sell_price, sell_strike_price, illiquid = sell_call_price(sell_strike)
   # buy call price
   buy_price, buy_strike_price = buy_call_price(buy_strike)
   # call credit spread - max profit & max loss
@@ -123,8 +123,8 @@ def call_credit_spread():
                           fg='white',
                           font='-weight bold')
   # place orders
-  place_buy_order(buy_price, buy_strike)
-  place_sell_order(sell_price, sell_strike)
+  # place_buy_order(buy_price, buy_strike)
+  # place_sell_order(sell_price, sell_strike)
 
 
 window = tk.Tk()
